@@ -63,10 +63,12 @@ public class IdleState implements State, MachineState {
 
     @Override
     public void movieOn() {
-        System.out.println("Leaving Idle State");
         if((int)(context.getDownloadedSoFar()*100/context.getDownloadedFile().getSize()) >= 20) {
+            System.out.println("Leaving Movie Idle State");
             this.context.setState(((ViewerRegion) context).playing);
         }
+
+        
 
     }
 
