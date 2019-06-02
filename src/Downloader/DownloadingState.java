@@ -17,14 +17,18 @@ public class DownloadingState implements State,MachineState {
         while(context.getDownloadedSoFar() <= fileSize && context.getCurrState() == this && (((DownloaderRegion)context).hasInternetConnection)){
             try {
                 Thread.sleep(1000);
-                context.setUnitsDownloaded(context.getDownloadedSoFar()+context.getDownloadSpeed());
-                System.out.println("downloadeing :" +context.getDownloadedSoFar()+" units");
-                if(context.getDownloadedSoFar() >= context.getDownloadedFile().getSize())
-                {
-                    ((DownloaderRegion)context).completeDownloading();
+                if(context.getDownloadedFile() != null) {
+                    context.setUnitsDownloaded(context.getDownloadedSoFar() + context.getDownloadSpeed());
+                    System.out.println("downloadeing :" + context.getDownloadedSoFar() + " units");
+                    if(context.getDownloadedSoFar() >= context.getDownloadedFile().getSize())
+
+                    {
+                        ((DownloaderRegion)context).completeDownloading();
 
 
+                    }
                 }
+
             } catch (InterruptedException e) {
                 System.out.println("Error at downloading state thread.sleep(1000)");
 
@@ -76,15 +80,18 @@ public class DownloadingState implements State,MachineState {
     public void runState() {
         System.out.println("Entering Downloading Mode");
 
+        //Thread t =
+        MovieDownloader.downThread = new Thread(()->this.run());
         Thread t = new Thread(()->this.run());
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            System.out.println("Error at running download thread from Downloading State");
-        }
+        t.start();
 
-//        while(context.getDownloadedFile().getSize() >= context.getDownloadedSoFar())
-//            this.run();
+//        try {
+//           t.join();
+//        } catch (InterruptedException e) {
+//            System.out.println("Error at running download thread from Downloading State");
+//        }
+
+
 
 
         System.out.println("Leaving Downloading Mode, file units downloaded: "+context.getDownloadedSoFar());

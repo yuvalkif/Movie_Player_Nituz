@@ -68,7 +68,7 @@ public class IdleState implements State, MachineState {
             this.context.setState(((ViewerRegion) context).playing);
         }
 
-        
+
 
     }
 

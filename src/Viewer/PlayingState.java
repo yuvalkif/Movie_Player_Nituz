@@ -12,9 +12,11 @@ public class PlayingState implements State, MachineState {
 
     @Override
     public void run() {
+        System.out.println("Enter MoviePlaying State");
         while(context.getCurrState() == this){
             try {
                 ((ViewerRegion)context).playingTime+=1;
+                System.out.println("Movie Playing Time: "+((ViewerRegion)context).playingTime);
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 System.out.println("Error in sleep in playing State");
@@ -30,6 +32,7 @@ public class PlayingState implements State, MachineState {
 
     @Override
     public void turnOff() {
+
 
     }
 
@@ -111,13 +114,9 @@ public class PlayingState implements State, MachineState {
 
     @Override
     public void runState() {
-        System.out.println("Entered Playing State");
+        System.out.println("Entered Movie Playing State");
         Thread t = new Thread(()->run());
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            System.out.println("Error on viewer when try to play movie in thread");
-        }
+        t.start();
 
     }
 }

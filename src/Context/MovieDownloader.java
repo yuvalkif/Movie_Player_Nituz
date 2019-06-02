@@ -19,6 +19,8 @@ public class MovieDownloader extends Observable implements State,Context,Observe
     protected double downloadSpeed;
     private boolean systemOn;
     protected int userPoints;
+    public static Thread downThread;
+    public static Thread movieThread;
     private ArrayList<Observer> observers;
 
     /**regions**/
@@ -108,6 +110,7 @@ public class MovieDownloader extends Observable implements State,Context,Observe
 
     @Override
     public void downloadAborted() {
+        this.currentFileDownload = null;
         if (systemOn)
             for(State s:regions)
                 s.downloadAborted();
@@ -284,10 +287,12 @@ public class MovieDownloader extends Observable implements State,Context,Observe
         return this.viewer;
     }
 
+
+
     @Override
     public void update(Observable o, Object arg) {
         if(o instanceof DownloaderRegion){
-            if(((String)arg).equals("completed")){
+            if(((String)arg).equals("complete")){
                 this.currentFileDownload = null;
 
             }

@@ -105,8 +105,11 @@ public class DownloaderRegion extends Observable implements State,Context,Observ
 
     @Override
     public void downloadAborted() {
+        System.out.println("download Aborted, Enter DownloadIdle State");
+        this.unitsDownloaded = 0;
+        setState(((DownloaderRegion)context).idleState);
+
         if(currState == downloadingState){
-            System.out.println("download aborted");
             setState(idleState);
         }
 
@@ -234,7 +237,6 @@ public class DownloaderRegion extends Observable implements State,Context,Observ
         System.out.println("Download completed in downloader region");
         setState(idleState);
         context.changeUserPoints(+1);
-        ((MovieDownloader)context).doneDownloading();
         notifyObservers();
 
     }

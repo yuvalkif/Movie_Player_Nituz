@@ -51,11 +51,14 @@ public class PauseState implements State, MachineState {
 
     @Override
     public void errorFixed() {
+        System.out.println("Error fixed , Leaving pause Movie");
+        context.setState(((ViewerRegion)context).playing);
 
     }
 
     @Override
     public void movieOn() {
+
 
     }
 

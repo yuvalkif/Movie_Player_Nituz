@@ -13,7 +13,7 @@ public class ErrorFixerState implements State, MachineState {
 
 
     public void run(){
-        System.out.println("Starting error fixing");
+        System.out.println("Entering Error Fixing State");
 
         int counter = 0;
 
@@ -117,6 +117,7 @@ public class ErrorFixerState implements State, MachineState {
 
     @Override
     public void runState() {
+        this.run();
 
     }
 }
