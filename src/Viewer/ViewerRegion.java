@@ -37,7 +37,7 @@ public class ViewerRegion implements State, Observer,Context {
     @Override
     public void update(Observable o, Object arg) {
             if (o instanceof DownloaderRegion) {
-                if(((String)arg).equals("completed")){
+                if(((String)arg).equals("complete")){
                     setState(idle);
 
 
@@ -59,22 +59,22 @@ public class ViewerRegion implements State, Observer,Context {
 
     @Override
     public File getDownloadedFile() {
-        return null;
+        return context.getDownloadedFile();
     }
 
     @Override
     public double getDownloadSpeed() {
-        return 0;
+        return context.getDownloadSpeed();
     }
 
     @Override
     public double getDownloadedSoFar() {
-        return 0;
+        return context.getDownloadedSoFar();
     }
 
     @Override
     public boolean hasInternetConnection() {
-        return false;
+        return true;
     }
 
     @Override
