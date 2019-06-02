@@ -25,6 +25,7 @@ public class DownloaderRegion extends Observable implements State,Context,Observ
 
     protected int filePrecentDownloaded;
     protected double unitsDownloaded;
+    protected File currentFile;
     protected double fileSize;
     protected double downloadSpeed;//should be recived from observer
 
@@ -42,6 +43,7 @@ public class DownloaderRegion extends Observable implements State,Context,Observ
         this.downloadPauseState = new DownloadPauseState(this);
         this.errorFixerState = new ErrorFixerState(this);
         this.hasInternetConnection = false;
+        this.currentFile =null;
         this.observers = new ArrayList<>();
         states = new ArrayList<>();
         states.add(idleState);
@@ -107,11 +109,9 @@ public class DownloaderRegion extends Observable implements State,Context,Observ
     public void downloadAborted() {
         System.out.println("download Aborted, Enter DownloadIdle State");
         this.unitsDownloaded = 0;
-        setState(((DownloaderRegion)context).idleState);
+        this.deleteFile();
+        setState(idleState);
 
-        if(currState == downloadingState){
-            setState(idleState);
-        }
 
     }
 
@@ -159,6 +159,8 @@ public class DownloaderRegion extends Observable implements State,Context,Observ
 
     @Override
     public File getDownloadedFile() {
+        if(this.currentFile == null)
+            this.currentFile = new File(context.getDownloadedFile());
         return context.getDownloadedFile();
     }
 

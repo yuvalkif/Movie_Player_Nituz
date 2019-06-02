@@ -168,6 +168,7 @@ public class DiskCheckState  implements State, MachineState {
     }
 
     protected void deleteFile(File f){
+
         this.diskSizeLeft+= f.getSize();
     }
 

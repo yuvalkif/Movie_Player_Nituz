@@ -38,6 +38,7 @@ public class MovieDownloader extends Observable implements State,Context,Observe
         this.systemOn = false;
         this.viewer = new ViewerRegion(this);
         this.internetStatus = new ConnectionRegion(this);
+        this.observers = new ArrayList<>();
         this.userStatus = new UserStatusRegion(this);
         this.downloader = new DownloaderRegion(this);
         //observers on connectionregion
@@ -47,13 +48,15 @@ public class MovieDownloader extends Observable implements State,Context,Observe
         ((Observable)userStatus).addObserver((Observer)downloader);
         //observers on downloaderregion
         ((Observable)downloader).addObserver((Observer)userStatus);
+        ((Observable)downloader).addObserver(this);
+        ((Observable)downloader).addObserver((Observer)viewer);
         //observers on MovieDownloader
+
         this.regions = new ArrayList<>();
         this.regions.add(internetStatus);
         this.regions.add(userStatus);
         this.regions.add(downloader);
         this.regions.add(viewer);
-        this.observers = new ArrayList<>();
         addObserver((Observer)userStatus);
         this.userPoints = 0;
 
@@ -199,7 +202,7 @@ public class MovieDownloader extends Observable implements State,Context,Observe
 
     @Override
     public File getDownloadedFile() {
-            return this.currentFileDownload;
+        return this.currentFileDownload;
     }
 
     @Override

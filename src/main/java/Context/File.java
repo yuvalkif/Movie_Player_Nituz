@@ -9,6 +9,11 @@ public class File {
         this.size = size;
     }
 
+    public File(File f){
+        this.name = f.getName();
+        this.size = f.getSize();
+    }
+
 
     public double getSize() {
         return size;

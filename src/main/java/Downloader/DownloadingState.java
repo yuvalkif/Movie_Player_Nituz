@@ -35,8 +35,6 @@ public class DownloadingState implements State,MachineState {
             }
 
         }
-        context.setState(((DownloaderRegion)context).downloadPauseState);
-
 
 
 
@@ -51,6 +49,8 @@ public class DownloadingState implements State,MachineState {
 
     @Override
     public void turnOff() {
+        System.out.println("Internet go down, Leaving Downloading State");
+        context.setState(((DownloaderRegion)context).downloadPauseState);
 
     }
 
@@ -102,7 +102,7 @@ public class DownloadingState implements State,MachineState {
 
     @Override
     public void downloadError() {
-        System.out.println("Download ERROR occured while downloading , Leaving Downloading State");
+        System.out.println("ERROR , Leaving Downloading State");
         context.setState(((DownloaderRegion)context).errorFixerState);
 
 

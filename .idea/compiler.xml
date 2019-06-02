@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Movie_Player_Nituz" target="1.5" />
+      <module name="Movie_Player_Nituz" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -16,6 +16,8 @@ public class DownloadPauseState implements State {
 
     @Override
     public void turnOn() {
+        System.out.println("Leaving DownloadPause State");
+        this.context.setState(((DownloaderRegion)context).downloadingState);
 
 
     }
@@ -32,7 +34,7 @@ public class DownloadPauseState implements State {
 
     @Override
     public void internetOn() {
-        System.out.println("Internet is turning On, Leaving DownloadPause State");
+        System.out.println("Leaving DownloadPause State");
         this.context.setState(((DownloaderRegion)context).downloadingState);
 
     }
@@ -52,6 +54,7 @@ public class DownloadPauseState implements State {
 
     @Override
     public void downloadError() {
+        downloadError();
 
     }
 
@@ -92,9 +95,7 @@ public class DownloadPauseState implements State {
 
     @Override
     public void runState() {
-        if (context.getDownloadedSoFar() >= context.getDownloadedFile().getSize()){
 
-        }
     }
 
 
