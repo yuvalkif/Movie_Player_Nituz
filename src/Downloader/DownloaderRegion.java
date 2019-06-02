@@ -201,7 +201,7 @@ public class DownloaderRegion extends Observable implements State,Context,Observ
     @Override
     public void notifyObservers() {
         for(Observer o : observers){
-            o.update(this,"complete");
+            o.update(this,true);
         }
     }
 
