@@ -185,9 +185,12 @@ public class DownloaderRegion extends Observable implements State,Context,Observ
     @Override
     public void setUnitsDownloaded(double unitsDownloaded) {
         this.unitsDownloaded = unitsDownloaded;
-        this.filePrecentDownloaded = (int)(this.unitsDownloaded*100/this.getDownloadedFile().get());
 
     }
+
+//    public void setFilePrecentDownloaded(int perecent){
+//
+//    }
 
     @Override
     public void setDownloadSpeed(double downloadSpeed) {

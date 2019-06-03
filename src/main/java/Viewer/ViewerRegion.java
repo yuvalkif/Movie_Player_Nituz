@@ -6,6 +6,7 @@ import Downloader.DownloaderRegion;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ViewerRegion implements State, Observer,Context {
@@ -14,6 +15,7 @@ public class ViewerRegion implements State, Observer,Context {
     protected int percentCompleted;
     protected State currState;
     protected double playingTime;
+    protected AtomicBoolean completed;
     State idle;
     State pause;
     State playing;
@@ -30,6 +32,7 @@ public class ViewerRegion implements State, Observer,Context {
         this.percentCompleted = 0;
         setState(idle);
         this.playingTime = 0;
+        this.completed = new AtomicBoolean(false);
 
 
     }
@@ -41,6 +44,7 @@ public class ViewerRegion implements State, Observer,Context {
                 if(((boolean)arg)){
                     this.playingTime = 0;
                     setState(idle);
+                    this.completed.set(true);
                 }
 
                 else if(!((boolean)arg)){
@@ -146,6 +150,7 @@ public class ViewerRegion implements State, Observer,Context {
 
     @Override
     public void fileRequest(AtomicInteger file) {
+        this.completed.set(false);
 
 
     }

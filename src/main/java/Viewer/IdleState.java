@@ -16,7 +16,7 @@ public class IdleState implements State, MachineState {
 
     @Override
     public void run() {
-            System.out.println("Entered Idle State");
+            System.out.println("Entered MovieIdle State");
             ((ViewerRegion)context).playingTime = 0;
 
 
@@ -65,7 +65,7 @@ public class IdleState implements State, MachineState {
 
     @Override
     public void movieOn() {
-        if((int)(context.getDownloadedSoFar()*100/context.getDownloadedFile().get()) >= 20) {
+        if((int)(context.getDownloadedSoFar()*100/context.getDownloadedFile().get()) >= 20 || ((ViewerRegion)context).completed.get()) {
             System.out.println("Leaving Movie Idle State");
             this.context.setState(((ViewerRegion) context).playing);
         }

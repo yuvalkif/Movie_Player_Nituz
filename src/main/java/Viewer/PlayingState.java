@@ -15,7 +15,6 @@ public class PlayingState implements State, MachineState {
 
     @Override
     public void run() {
-        System.out.println("Enter MoviePlaying State");
         while(context.getCurrState() == this){
             try {
                 ((ViewerRegion)context).playingTime+=1;
