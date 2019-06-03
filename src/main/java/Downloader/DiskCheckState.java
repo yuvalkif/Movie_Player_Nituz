@@ -12,6 +12,7 @@ public class DiskCheckState  implements State, MachineState {
     private double diskSize;
     private double diskSizeLeft;
     private int counter;
+    private AtomicInteger file;
     ArrayList<File> diskFiles;
 
     public DiskCheckState(Context context){
@@ -47,12 +48,7 @@ public class DiskCheckState  implements State, MachineState {
     @Override
     public void run() {
         System.out.println("Entering DiscCheck State");
-//        if(file == null)
-//            file = this.context.getDownloadedFile();
-        AtomicInteger file = context.getDownloadedFile();
- //       System.out.println("das");
- //       System.out.println(file.get()+": file size");
-        System.out.println(diskSizeLeft);
+        file = context.getDownloadedFile();
         if(diskSizeLeft-file.get() >= 0 ){
             diskSizeLeft = diskSizeLeft - file.get();
             if(context.hasInternetConnection()) {
@@ -118,7 +114,7 @@ public class DiskCheckState  implements State, MachineState {
     @Override
     public void downloadAborted() {
         System.out.println("Download Aborted, Deleting file and Leaving CheckDisk State");
-        diskSizeLeft = diskSizeLeft + context.getDownloadedFile().get();
+        //diskSizeLeft = diskSizeLeft + context.getDownloadedFile().get();
         context.changeUserPoints(-1);
         context.setState(((DownloaderRegion)context).idleState);
 
@@ -167,7 +163,7 @@ public class DiskCheckState  implements State, MachineState {
 
     protected void deleteFile(AtomicInteger f){
 
-        this.diskSizeLeft+= f.get();
+        this.diskSizeLeft+= this.file.get();
     }
 
     public void setDiskSize(int diskSize){

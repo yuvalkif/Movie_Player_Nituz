@@ -19,6 +19,7 @@ public class Main {
 
         while(true){
             input = in.nextLine() ;
+            String[]splitedInput = input.split(" ");
 
             if(input.equals("turnOn")) {
                 executor.submit(new Thread(()->mv.turnOn()));
@@ -28,8 +29,8 @@ public class Main {
                 executor.submit(new Thread(()->mv.internetOn()));
             }else if(input.equals("internetOff")) {
                 executor.submit(new Thread(()->mv.internetOff()));
-            }else if(input.equals("fileRequest")) {
-                executor.submit(new Thread(()-> mv.fileRequest(new AtomicInteger(101))));
+            }else if(splitedInput.length > 1 && splitedInput[0].equals("fileRequest")) {
+                executor.submit(new Thread(()-> mv.fileRequest(new AtomicInteger(Integer.parseInt(splitedInput[1])))));
             }else if(input.equals("downloadAborted")) {
                 executor.submit(new Thread(()->mv.downloadAborted()));
             }else if(input.equals("downloadError")) {

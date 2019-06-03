@@ -19,7 +19,7 @@ public class PlayingState implements State, MachineState {
         while(context.getCurrState() == this){
             try {
                 ((ViewerRegion)context).playingTime+=1;
-                System.out.println("Movie Playing Time: "+((ViewerRegion)context).playingTime);
+                //System.out.println("Movie Playing Time: "+((ViewerRegion)context).playingTime);
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 break;

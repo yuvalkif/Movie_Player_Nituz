@@ -35,10 +35,11 @@ public class ErrorFixerState implements State, MachineState {
             }
         }
         fixed = false;
+        context.setState(((DownloaderRegion)context).idleState);
         context.deleteFile();
         context.changeUserPoints(-1);
         System.out.println("Could not fix Error after 3 seconds, Leaving ErrorFix State");
-        context.setState(((DownloaderRegion)context).idleState);
+
     }
 
     @Override

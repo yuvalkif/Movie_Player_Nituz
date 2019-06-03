@@ -56,7 +56,7 @@ public class DownloadPauseState implements State {
 
     @Override
     public void downloadError() {
-        downloadError();
+
 
     }
 
@@ -97,6 +97,7 @@ public class DownloadPauseState implements State {
 
     @Override
     public void runState() {
+        System.out.println("Entered DownloadPause State");
 
     }
 

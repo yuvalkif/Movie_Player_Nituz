@@ -20,6 +20,7 @@ public class IdleState implements State, MachineState {
     @Override
     public void run() {
         System.out.println("Entered DownloadIdle State");
+        //((DownloaderRegion)context).set
         context.setUnitsDownloaded(0);
 
     }
