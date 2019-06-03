@@ -1,7 +1,9 @@
 package Context;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public interface Context {
-    public File getDownloadedFile();
+    public AtomicInteger getDownloadedFile();
     public double getDownloadSpeed();
     public double getDownloadedSoFar();
     public boolean hasInternetConnection();

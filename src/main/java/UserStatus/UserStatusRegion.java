@@ -5,6 +5,7 @@ import Context.*;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class UserStatusRegion extends java.util.Observable implements State, Observer,Context {
 
@@ -76,7 +77,7 @@ public class UserStatusRegion extends java.util.Observable implements State, Obs
     }
 
     @Override
-    public void fileRequest(File file) {
+    public void fileRequest(AtomicInteger file) {
 
     }
 
@@ -134,8 +135,8 @@ public class UserStatusRegion extends java.util.Observable implements State, Obs
     }
 
     @Override
-    public File getDownloadedFile() {
-        return null;
+    public AtomicInteger getDownloadedFile() {
+        return context.getDownloadedFile();
     }
 
     @Override

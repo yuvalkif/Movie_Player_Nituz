@@ -9,6 +9,7 @@ import UserStatus.UserStatusRegion;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DownloaderRegion extends Observable implements State,Context,Observer {
 
@@ -100,19 +101,18 @@ public class DownloaderRegion extends Observable implements State,Context,Observ
     }
 
     @Override
-    public void fileRequest(File file) {
+    public void fileRequest(AtomicInteger file) {
         currState.fileRequest(file);
 
     }
 
     @Override
     public void downloadAborted() {
+        this.currState.downloadAborted();
         System.out.println("download Aborted, Enter DownloadIdle State");
         this.unitsDownloaded = 0;
+        notifyObservers();
         this.deleteFile();
-        setState(idleState);
-
-
     }
 
     @Override
@@ -158,9 +158,11 @@ public class DownloaderRegion extends Observable implements State,Context,Observ
     }
 
     @Override
-    public File getDownloadedFile() {
-        if(this.currentFile == null)
-            this.currentFile = new File(context.getDownloadedFile());
+    public AtomicInteger getDownloadedFile() {
+//        if(this.currentFile == null) {
+//            this.currentFile = new File(context.getDownloadedFile());
+//            return currentFile;
+//        }
         return context.getDownloadedFile();
     }
 
@@ -183,7 +185,7 @@ public class DownloaderRegion extends Observable implements State,Context,Observ
     @Override
     public void setUnitsDownloaded(double unitsDownloaded) {
         this.unitsDownloaded = unitsDownloaded;
-        this.filePrecentDownloaded = (int)(this.unitsDownloaded*100/this.getDownloadedFile().getSize());
+        this.filePrecentDownloaded = (int)(this.unitsDownloaded*100/this.getDownloadedFile().get());
 
     }
 

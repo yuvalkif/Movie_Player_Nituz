@@ -3,6 +3,7 @@ package Downloader;
 import Context.*;
 
 import javax.crypto.Mac;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class IdleState implements State, MachineState {
 
@@ -50,8 +51,8 @@ public class IdleState implements State, MachineState {
     }
 
     @Override
-    public void fileRequest(File file) {
-        System.out.println("Recived a file request for file: "+file.getName() +"size: "+file.getSize());
+    public void fileRequest(AtomicInteger file) {
+        System.out.println("Recived a file request for file: " +"size: "+file.get());
         System.out.println("Leaving IdleDownload State");
         context.setState(((DownloaderRegion)context).diskCheckState);
 

@@ -1,5 +1,7 @@
 package Context;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /** interface which represents the system events**/
 public interface State {
 
@@ -7,7 +9,7 @@ public interface State {
     public void turnOff();
     public void internetOff();
     public void internetOn();
-    public void fileRequest(File file);
+    public void fileRequest(AtomicInteger file);
     public void downloadAborted();
     public void downloadError();
     public void errorFixed();

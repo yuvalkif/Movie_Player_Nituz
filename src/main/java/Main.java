@@ -2,6 +2,7 @@ import Context.File;
 import Context.MovieDownloader;
 import java.util.Scanner;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
     public static void main(String args[]){
@@ -28,7 +29,7 @@ public class Main {
             }else if(input.equals("internetOff")) {
                 executor.submit(new Thread(()->mv.internetOff()));
             }else if(input.equals("fileRequest")) {
-                executor.submit(new Thread(()-> mv.fileRequest(new File("file", 20))));
+                executor.submit(new Thread(()-> mv.fileRequest(new AtomicInteger(101))));
             }else if(input.equals("downloadAborted")) {
                 executor.submit(new Thread(()->mv.downloadAborted()));
             }else if(input.equals("downloadError")) {

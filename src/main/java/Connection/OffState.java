@@ -1,6 +1,8 @@
 package Connection;
 import Context.*;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class OffState implements State, MachineState {
     private Context context;
 
@@ -45,7 +47,7 @@ public class OffState implements State, MachineState {
     }
 
     @Override
-    public void fileRequest(File file) {
+    public void fileRequest(AtomicInteger file) {
 
     }
 

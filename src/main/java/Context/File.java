@@ -10,11 +10,11 @@ public class File {
     }
 
     public File(File f){
+        if(f == null)
+            return;
         this.name = f.getName();
         this.size = f.getSize();
     }
-
-
     public double getSize() {
         return size;
     }

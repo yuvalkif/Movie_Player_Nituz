@@ -6,6 +6,7 @@ import Downloader.DownloaderRegion;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ViewerRegion implements State, Observer,Context {
 
@@ -40,8 +41,13 @@ public class ViewerRegion implements State, Observer,Context {
                 if(((boolean)arg)){
                     this.playingTime = 0;
                     setState(idle);
-
                 }
+
+                else if(!((boolean)arg)){
+                    this.playingTime = 0;
+                    setState(idle);
+                }
+
             }
             if (o instanceof ConnectionRegion){
                 if(arg instanceof OffState){
@@ -58,7 +64,7 @@ public class ViewerRegion implements State, Observer,Context {
 
 
     @Override
-    public File getDownloadedFile() {
+    public AtomicInteger getDownloadedFile() {
         return context.getDownloadedFile();
     }
 
@@ -139,7 +145,7 @@ public class ViewerRegion implements State, Observer,Context {
     }
 
     @Override
-    public void fileRequest(File file) {
+    public void fileRequest(AtomicInteger file) {
 
 
     }

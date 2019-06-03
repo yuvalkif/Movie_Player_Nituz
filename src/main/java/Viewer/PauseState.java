@@ -2,6 +2,8 @@ package Viewer;
 
 import Context.*;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class PauseState implements State, MachineState {
 
     private Context context;
@@ -35,12 +37,14 @@ public class PauseState implements State, MachineState {
     }
 
     @Override
-    public void fileRequest(File file) {
+    public void fileRequest(AtomicInteger file) {
 
     }
 
     @Override
     public void downloadAborted() {
+        System.out.println("Leaving MoviePause State");
+        context.setState(((ViewerRegion)context).idle);
 
     }
 
@@ -94,7 +98,7 @@ public class PauseState implements State, MachineState {
 
     @Override
     public void runState() {
-        System.out.println("Entered Pause Movie State");
+        System.out.println("Entered PauseMovie State");
         run();
 
     }

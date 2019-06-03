@@ -3,6 +3,8 @@ package Viewer;
 import Context.*;
 import Downloader.DownloaderRegion;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class IdleState implements State, MachineState {
 
     private Context context;
@@ -42,7 +44,7 @@ public class IdleState implements State, MachineState {
     }
 
     @Override
-    public void fileRequest(File file) {
+    public void fileRequest(AtomicInteger file) {
 
     }
 
@@ -63,7 +65,7 @@ public class IdleState implements State, MachineState {
 
     @Override
     public void movieOn() {
-        if((int)(context.getDownloadedSoFar()*100/context.getDownloadedFile().getSize()) >= 20) {
+        if((int)(context.getDownloadedSoFar()*100/context.getDownloadedFile().get()) >= 20) {
             System.out.println("Leaving Movie Idle State");
             this.context.setState(((ViewerRegion) context).playing);
         }

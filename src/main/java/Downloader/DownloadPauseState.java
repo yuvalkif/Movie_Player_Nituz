@@ -2,6 +2,8 @@ package Downloader;
 
 import Context.*;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class DownloadPauseState implements State {
 
     private Context context;
@@ -40,7 +42,7 @@ public class DownloadPauseState implements State {
     }
 
     @Override
-    public void fileRequest(File file) {
+    public void fileRequest(AtomicInteger file) {
 
     }
 

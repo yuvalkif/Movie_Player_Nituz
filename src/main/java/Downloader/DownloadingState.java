@@ -2,35 +2,41 @@ package Downloader;
 
 import Context.*;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class DownloadingState implements State,MachineState {
 
     private Context context;
+    protected Thread downloadingThread;
+    AtomicBoolean stop;
 
     public DownloadingState(Context context) {
         this.context = context;
+        this.stop = new AtomicBoolean(false);
     }
 
 
     public void run(){
-        double fileSize = context.getDownloadedFile().getSize();
+        //this.stop.set(true);
+        //System.out.println("");
+        double fileSize = context.getDownloadedFile().get();
        // context.getDownloadedSoFar() <= fileSize && context.getCurrState() == this && (((DownloaderRegion)context).hasInternetConnection
-        while(context.getDownloadedSoFar() <= fileSize && context.getCurrState() == this && (((DownloaderRegion)context).hasInternetConnection)){
+        while(context.getCurrState() == this && context.getDownloadedSoFar() <= fileSize){
             try {
-                Thread.sleep(1000);
                 if(context.getDownloadedFile() != null) {
                     context.setUnitsDownloaded(context.getDownloadedSoFar() + context.getDownloadSpeed());
                     //System.out.println("downloadeing :" + context.getDownloadedSoFar() + " units");
-                    if(context.getDownloadedSoFar() >= context.getDownloadedFile().getSize())
+                    if(context.getDownloadedSoFar() >= context.getDownloadedFile().get())
 
                     {
                         ((DownloaderRegion)context).completeDownloading();
-
-
                     }
                 }
-
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
-                System.out.println("Error at downloading state thread.sleep(1000)");
+                break;
+                //System.out.println("Error at downloading state thread.sleep(1000)");
 
             }
 
@@ -49,7 +55,8 @@ public class DownloadingState implements State,MachineState {
 
     @Override
     public void turnOff() {
-        System.out.println("Internet go down, Leaving Downloading State");
+        System.out.println("System off, Leaving Downloading State");
+        downloadingThread.interrupt();
         context.setState(((DownloaderRegion)context).downloadPauseState);
 
     }
@@ -57,6 +64,7 @@ public class DownloadingState implements State,MachineState {
     @Override
     public void internetOff() {
         System.out.println("Internet go down, Leaving Downloading State");
+        downloadingThread.interrupt();
         context.setState(((DownloaderRegion)context).downloadPauseState);
 
     }
@@ -67,34 +75,26 @@ public class DownloadingState implements State,MachineState {
     }
 
     @Override
-    public void fileRequest(File file) {
+    public void fileRequest(AtomicInteger file) {
 
     }
 
     @Override
     public void downloadAborted() {
+        System.out.println("Leaving Downloading State");
+        //this.stop.set(true);
+        downloadingThread.interrupt();
+        context.setState(((DownloaderRegion)context).idleState);
+        context.setUnitsDownloaded(0);
+
 
     }
 
     @Override
     public void runState() {
-        System.out.println("Entering Downloading Mode");
-
-        //Thread t =
-        MovieDownloader.downThread = new Thread(()->this.run());
-        Thread t = new Thread(()->this.run());
-        t.start();
-
-//        try {
-//           t.join();
-//        } catch (InterruptedException e) {
-//            System.out.println("Error at running download thread from Downloading State");
-//        }
-
-
-
-
-        System.out.println("Leaving Downloading Mode, file units downloaded: "+context.getDownloadedSoFar());
+        System.out.println("Entering DownloadingMode");
+        downloadingThread = new Thread(()->this.run());
+        downloadingThread.start();
 
 
 
@@ -103,9 +103,8 @@ public class DownloadingState implements State,MachineState {
     @Override
     public void downloadError() {
         System.out.println("ERROR , Leaving Downloading State");
+        downloadingThread.interrupt();
         context.setState(((DownloaderRegion)context).errorFixerState);
-
-
     }
 
     @Override

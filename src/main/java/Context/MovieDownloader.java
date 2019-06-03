@@ -9,19 +9,17 @@ import Viewer.ViewerRegion;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class MovieDownloader extends Observable implements State,Context,Observer {
 
     protected double unitsDownloaded;
     public static String currEvent;
-    protected File currentFileDownload;
+    AtomicInteger currentFileDownload;
     protected double downloadSpeed;
     private boolean systemOn;
     protected int userPoints;
-    public static Thread downThread;
-    public static Thread movieThread;
-    private ArrayList<Observer> observers;
 
     /**regions**/
     protected State internetStatus;
@@ -29,11 +27,13 @@ public class MovieDownloader extends Observable implements State,Context,Observe
     protected State downloader;
     protected State viewer;
     protected ArrayList<State>regions;
+    private ArrayList<Observer> observers;
+
 
 
     public MovieDownloader(){
         this.unitsDownloaded = 0;
-        this.currentFileDownload = null;
+        this.currentFileDownload = new AtomicInteger(-1);
         this.downloadSpeed = 0;
         this.systemOn = false;
         this.viewer = new ViewerRegion(this);
@@ -66,19 +66,19 @@ public class MovieDownloader extends Observable implements State,Context,Observe
 
     @Override
     public void turnOn() {
+        this.systemOn = true;
         currEvent = "turnOn";
         System.out.println("Entering System On State");
-        this.systemOn = true;
-        for(State s:regions)
-            s.runState();
+//        for(State s:regions)
+//            s.runState();
 
     }
 
     @Override
     public void turnOff() {
+        this.systemOn = false;
         currEvent = "turnOff";
         System.out.println("Entering System Off State");
-        this.systemOn = false;
     }
 
     @Override
@@ -97,11 +97,11 @@ public class MovieDownloader extends Observable implements State,Context,Observe
     }
 
     @Override
-    public void fileRequest(File file) {
-       // currEvent =
+    public void fileRequest(AtomicInteger file) {
         if (systemOn) {
-            if(this.currentFileDownload == null) {
-                this.currentFileDownload = file;
+            if(this.currentFileDownload.get() == -1) {
+                System.out.println("putting file in movieplayer");
+                this.currentFileDownload = new AtomicInteger(file.get());
                 for (State s : regions)
                     s.fileRequest(currentFileDownload);
             }
@@ -113,7 +113,6 @@ public class MovieDownloader extends Observable implements State,Context,Observe
 
     @Override
     public void downloadAborted() {
-        this.currentFileDownload = null;
         if (systemOn)
             for(State s:regions)
                 s.downloadAborted();
@@ -201,7 +200,7 @@ public class MovieDownloader extends Observable implements State,Context,Observe
 
 
     @Override
-    public File getDownloadedFile() {
+    public AtomicInteger getDownloadedFile() {
         return this.currentFileDownload;
     }
 
@@ -224,7 +223,7 @@ public class MovieDownloader extends Observable implements State,Context,Observe
     public void setUnitsDownloaded(double unitsDownloaded) {
         if(systemOn) {
             this.unitsDownloaded += unitsDownloaded;
-            if (this.unitsDownloaded == currentFileDownload.getSize())
+            if (this.unitsDownloaded == currentFileDownload.get())
                 notifyObservers();
         }
 
@@ -296,9 +295,13 @@ public class MovieDownloader extends Observable implements State,Context,Observe
     public void update(Observable o, Object arg) {
         if(o instanceof DownloaderRegion){
             if(((boolean)arg)){
-                this.currentFileDownload = null;
+                this.currentFileDownload = new AtomicInteger(-1);
 
             }
+            else if(!((boolean)arg)){
+                this.currentFileDownload = new AtomicInteger(-1);
+            }
+
         }
 
     }

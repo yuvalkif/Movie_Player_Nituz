@@ -2,6 +2,8 @@ package Downloader;
 
 import Context.*;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class ErrorFixerState implements State, MachineState {
     private Context context;
     private boolean fixed;
@@ -60,7 +62,7 @@ public class ErrorFixerState implements State, MachineState {
     }
 
     @Override
-    public void fileRequest(File file) {
+    public void fileRequest(AtomicInteger file) {
 
     }
 

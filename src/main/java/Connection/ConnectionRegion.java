@@ -4,13 +4,13 @@ import Context.*;
 
 import java.util.ArrayList;
 import java.util.Observer;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConnectionRegion extends java.util.Observable implements State,Context{
 
     private Context context;
     private State currState;
     private ArrayList<Observer> observers;
-    private EventHandelingStrategy strat;
     State onState ;
     State offState ;
 
@@ -20,7 +20,6 @@ public class ConnectionRegion extends java.util.Observable implements State,Cont
         this.offState = new OffState(this);
         /**on startup internet is off**/
         this.observers = new ArrayList<>();
-        this.strat = new EventHandelingStrategy(this);
 
         this.setState(offState);
 
@@ -83,7 +82,7 @@ public class ConnectionRegion extends java.util.Observable implements State,Cont
     }
 
     @Override
-    public void fileRequest(File file) {
+    public void fileRequest(AtomicInteger file) {
         currState.fileRequest(file);
     }
 
@@ -127,7 +126,7 @@ public class ConnectionRegion extends java.util.Observable implements State,Cont
     }
 
     @Override
-    public File getDownloadedFile() {
+    public AtomicInteger getDownloadedFile() {
         return context.getDownloadedFile();
     }
 
